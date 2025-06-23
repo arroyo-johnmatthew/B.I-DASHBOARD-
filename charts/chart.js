@@ -59,7 +59,4 @@ function updateChart(chartData) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  fetchAndUpdateChart(); // Fetch on page load
-  setInterval(fetchAndUpdateChart, 5000); // Fetch every 10 seconds
-});
+fetchAndUpdateChart(); // Fetch on page load
