@@ -1,27 +1,36 @@
-const ctx = document.getElementById("myChart");
+let chartInstance = null;
 
-fetch("chart.php")
-  .then((response) => response.json())
-  .then((data) => {
-    createChart(data, "bar");
-  });
+function fetchAndUpdateChart() {
+  fetch("chart.php")
+    .then(response => response.json())
+    .then(data => {
+      updateChart(data);
+    })
+    .catch(error => {
+      console.error("Fetch error:", error);
+    });
+}
 
-function createChart(chartData, type) {
-  const barColor = "#64b5f6"; // Set your desired color here
+function updateChart(chartData) {
+  const ctx = document.getElementById("myChart").getContext("2d");
+  const barColor = "#64b5f6";
 
-  new Chart(ctx, {
-    type: type,
+  // Destroy previous chart instance to avoid duplicates
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+
+  chartInstance = new Chart(ctx, {
+    type: "bar",
     data: {
-      labels: chartData.map((row) => row.date),
-      datasets: [
-        {
-          label: "Total Sales (₱)",
-          data: chartData.map((row) => parseFloat(row.total_sales)),
-          backgroundColor: barColor, // All bars same color
-          borderColor: barColor, // All borders same color
-          borderWidth: 1,
-        },
-      ],
+      labels: chartData.map(row => row.product_name),
+      datasets: [{
+        label: "Total Sales (₱)",
+        data: chartData.map(row => parseFloat(row.total_sales)),
+        backgroundColor: barColor,
+        borderColor: barColor,
+        borderWidth: 1
+      }]
     },
     options: {
       scales: {
@@ -29,25 +38,28 @@ function createChart(chartData, type) {
           beginAtZero: true,
           title: {
             display: true,
-            text: "Total Sales in Peso",
-          },
+            text: "Total Sales in Peso"
+          }
         },
         x: {
           title: {
             display: true,
-            text: "Date",
-          },
-        },
+            text: "Date"
+          }
+        }
       },
       plugins: {
         title: {
           display: true,
           text: "Total Sales by Date",
-          font: {
-            size: 18,
-          },
-        },
-      },
-    },
+          font: { size: 18 }
+        }
+      }
+    }
   });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  fetchAndUpdateChart(); // Fetch on page load
+  setInterval(fetchAndUpdateChart, 5000); // Fetch every 10 seconds
+});
