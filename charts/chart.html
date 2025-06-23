@@ -1,25 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="chart.css" />
-    <title>CHARTS</title>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="chart.css" />
+  <title>CHARTS</title>
+</head>
 
-  <body>
-    <div class="chart">
-      <h2>Sales Data</h2>
-      <select id="chartTypeSelector" onchange="changeChartType(this.value)">
-        <option value="bar">Bar Chart</option>
-        <option value="line">Line Chart</option>
-        <option value="pie">Pie Chart</option>
-      </select>
+<body>
+  <!-- 🔘 Global Control Buttons -->
+  <div style="text-align: center; margin-top: 30px;">
+    <button onclick="showSalesChart()">Show Sales Chart</button>
+    <button onclick="showCategoryChart()">Show Category Chart</button>
+  </div>
 
-      <canvas id="myChart"></canvas>
-    </div>
+  <!-- 🔹 Sales Chart Section -->
+  <div class="chart" id="salesChart">
+    <h2>Sales</h2>
+    <select id="chartTypeSelector" onchange="changeChartType(this.value)">
+      <option value="bar">Bar Chart</option>
+      <option value="line">Line Chart</option>
+      <option value="pie">Pie Chart</option>
+    </select>
+    <canvas id="myChart"></canvas>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="chart.js"></script>
-  </body>
+  <!-- 🔹 Quantity by Category Chart Section -->
+  <div class="chart" id="categoryChart" style="display: none;">
+    <h2>Quantity Sold by Category</h2>
+    <select id="categoryChartType" onchange="changeCategoryChartType(this.value)">
+      <option value="bar">Bar Chart</option>
+      <option value="line">Line Chart</option>
+      <option value="pie">Pie Chart</option>
+    </select>
+    <canvas id="myChart2"></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="chart.js"></script>
+</body>
 </html>

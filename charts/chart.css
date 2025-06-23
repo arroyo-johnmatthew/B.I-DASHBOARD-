@@ -60,7 +60,7 @@ select#chartTypeSelector {
   border: 1px solid #aaa;
   background: #ffffffcc;
   font-family: "Quicksand", sans-serif;
-  cursor: pointer;
+  cursor: pointer;  
   width: fit-content;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.2s ease-in-out;
