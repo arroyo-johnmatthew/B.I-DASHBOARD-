@@ -10,6 +10,12 @@
   <body>
     <div class="chart">
       <h2>Sales Data</h2>
+      <select id="chartTypeSelector" onchange="changeChartType(this.value)">
+        <option value="bar">Bar Chart</option>
+        <option value="line">Line Chart</option>
+        <option value="pie">Pie Chart</option>
+      </select>
+
       <canvas id="myChart"></canvas>
     </div>
 
