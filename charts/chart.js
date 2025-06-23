@@ -38,20 +38,20 @@ function updateChart(chartData) {
           beginAtZero: true,
           title: {
             display: true,
-            text: "Total Sales in Peso"
+            text: "Total Sales"
           }
         },
         x: {
           title: {
             display: true,
-            text: "Date"
+            text: "Product"
           }
         }
       },
       plugins: {
         title: {
           display: true,
-          text: "Total Sales by Date",
+          text: "Total Sales by Product Name",
           font: { size: 18 }
         }
       }
@@ -59,7 +59,4 @@ function updateChart(chartData) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  fetchAndUpdateChart(); // Fetch on page load
-  setInterval(fetchAndUpdateChart, 5000); // Fetch every 10 seconds
-});
+fetchAndUpdateChart(); // Fetch on page load
