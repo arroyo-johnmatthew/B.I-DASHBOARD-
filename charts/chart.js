@@ -38,7 +38,7 @@ function updateChart(chartData) {
           beginAtZero: true,
           title: {
             display: true,
-            text: "Total Sales in Peso"
+            text: "Total Sales"
           }
         },
         x: {
@@ -51,7 +51,7 @@ function updateChart(chartData) {
       plugins: {
         title: {
           display: true,
-          text: "Total Sales by Date",
+          text: "Total Sales by Product Name",
           font: { size: 18 }
         }
       }
