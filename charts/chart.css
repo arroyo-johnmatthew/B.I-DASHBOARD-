@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Quicksand", sans-serif;
+  min-height: 100vh;
+  color: #555;
+  background: linear-gradient(135deg, #acb6e5 50%, #fcb69f 100%);
+}
+
+h2 {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 0;
+  margin: 40px 0 20px 0;
+  font-size: 2.5rem;
+}
+
+.chart {
+  width: 90%;
+  max-width: 900px;
+  height: 500px;
+  padding: 40px 24px 60px 24px;
+  margin: 40px auto 0 auto;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin: 0 auto;
+  background: transparent;
+  border-radius: 12px;
+}
