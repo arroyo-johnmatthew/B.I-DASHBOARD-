@@ -4,6 +4,7 @@ const ctx = canvas.getContext("2d");
 
 let chartInstance;
 
+// Fetch chart data on page load
 fetch("chart.php")
   .then((response) => response.json())
   .then((data) => {
@@ -18,7 +19,7 @@ function createChart(chartData, type) {
 
   // Adjust height depending on chart type
   if (type === "pie") {
-    chartContainer.style.height = "400px";
+    chartContainer.style.height = "600px";
   } else {
     chartContainer.style.height = "500px";
   }
@@ -32,12 +33,16 @@ function createChart(chartData, type) {
     ],
     borderColor: "#555",
     borderWidth: 1,
+    fill: false,
+    tension: 0.0 // smooth line if line chart
   };
 
   const config = {
     type: type,
     data: {
-      labels: chartData.map((row) => row.date),
+      labels: type === "pie"
+        ? chartData.map(row => row.product_name)          // 🔹 pie: keep labels as-is
+        : chartData.map(row => row.product_name.split(" ")), // 🔹 bar/line: split for multi-line
       datasets: type === "pie" ? [Object.assign({}, datasetConfig)] : [datasetConfig],
     },
     options: {
@@ -62,6 +67,13 @@ function createChart(chartData, type) {
             display: true,
             text: "Product",
           },
+          ticks: {
+            autoSkip: false,
+            maxRotation: 0,
+            minRotation: 0,
+            align: "center",
+            padding: 10
+          }
         },
       } : {},
       plugins: {
@@ -73,7 +85,7 @@ function createChart(chartData, type) {
           },
         },
         legend: {
-          display: true,
+          display: type === "pie",
           position: "bottom",
         },
       },
