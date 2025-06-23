@@ -4,7 +4,21 @@ const ctx = canvas.getContext("2d");
 
 let chartInstance;
 
-// Fetch chart data on page load
+// 🔹 Generate HSL-based unique colors
+function generateColors(count) {
+  const colors = [];
+  const saturation = 65;
+  const lightness = 60;
+
+  for (let i = 0; i < count; i++) {
+    const hue = (i * (360 / count)) % 360;
+    colors.push(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
+  }
+
+  return colors;
+}
+
+// 🔹 Fetch chart data on page load
 fetch("chart.php")
   .then((response) => response.json())
   .then((data) => {
@@ -14,23 +28,19 @@ fetch("chart.php")
 
 function createChart(chartData, type) {
   if (chartInstance) {
-    chartInstance.destroy(); // Destroy previous chart
+    chartInstance.destroy(); // 🔹 Remove previous chart instance
   }
 
-  // Adjust height depending on chart type
-  if (type === "pie") {
-    chartContainer.style.height = "600px";
-  } else {
-    chartContainer.style.height = "500px";
-  }
+  // Let CSS control height
+  chartContainer.style.height = "";
+
+  // 🔹 Generate dynamic colors based on number of data points
+  const colors = generateColors(chartData.length);
 
   const datasetConfig = {
     label: "Total Sales (₱)",
     data: chartData.map((row) => parseFloat(row.total_sales)),
-    backgroundColor: [
-      "#64b5f6", "#9575cd", "#4db6ac", "#ff8a65",
-      "#e57373", "#fdd835", "#81c784"
-    ],
+    backgroundColor: colors,        // Apply full color set
     borderColor: "#555",
     borderWidth: 1,
     fill: false,
@@ -41,9 +51,9 @@ function createChart(chartData, type) {
     type: type,
     data: {
       labels: type === "pie"
-        ? chartData.map(row => row.product_name)          // 🔹 pie: keep labels as-is
-        : chartData.map(row => row.product_name.split(" ")), // 🔹 bar/line: split for multi-line
-      datasets: type === "pie" ? [Object.assign({}, datasetConfig)] : [datasetConfig],
+        ? chartData.map(row => row.product_name)               // 🔹 pie: regular labels
+        : chartData.map(row => row.product_name.split(" ")),   // 🔹 bar/line: multi-line labels
+      datasets: [datasetConfig]
     },
     options: {
       responsive: true,
@@ -52,7 +62,9 @@ function createChart(chartData, type) {
         padding: {
           top: 20,
           bottom: 20,
-        },
+          left: 20,
+          right: 20
+        }
       },
       scales: type !== "pie" ? {
         y: {
@@ -86,16 +98,23 @@ function createChart(chartData, type) {
         },
         legend: {
           display: type === "pie",
-          position: "bottom",
-        },
-      },
-    },
+          position: "right",
+          labels: {
+            boxWidth: 20,
+            padding: 15,
+            font: {
+              size: 14,
+            }
+          }
+        }
+      }
+    }
   };
 
   chartInstance = new Chart(ctx, config);
 }
 
-// Called by dropdown onchange
+// 🔹 Called by dropdown to change chart type
 function changeChartType(newType) {
   createChart(window.chartData, newType);
 }
