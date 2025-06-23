@@ -44,7 +44,7 @@ function updateChart(chartData) {
         x: {
           title: {
             display: true,
-            text: "Date"
+            text: "Product"
           }
         }
       },
