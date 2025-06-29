@@ -2,10 +2,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Quicksand", sans-serif;
 }
 
 body {
-  font-family: "Quicksand", sans-serif;
   min-height: 100vh;
   color: #555;
   background: linear-gradient(135deg, #acb6e5 50%, #fcb69f 100%);
@@ -23,9 +23,8 @@ h2 {
 .chart {
   width: 95%;
   max-width: 1100px;
-  height: 500px;
-  padding: 40px 20px 60px 20px;
-
+  height: 550px;
+  padding: 70px 20px 70px 20px;
   margin: 40px auto 0 auto;
   background: rgba(255, 255, 255, 0.18);
   border-radius: 24px;
@@ -52,26 +51,53 @@ h2 {
   border-radius: 12px;
 }
 
-select#chartTypeSelector {
-  margin-bottom: 20px;
-  padding: 8px 12px;
-  font-size: 0.95rem;
-  border-radius: 6px;
-  border: 1px solid #aaa;
-  background: #ffffffcc;
-  font-family: "Quicksand", sans-serif;
-  cursor: pointer;  
-  width: fit-content;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: all 0.2s ease-in-out;
-}
-
-select#chartTypeSelector:hover {
-  background: #f0f0f0;
-}
-
 canvas#myChart {
   width: 100% !important;
   height: 100% !important;
   max-height: 100%;
+}
+
+select#chartTypeSelector,
+select#categoryChartType {
+  margin-bottom: 20px;
+  padding: 10px 16px;
+  font-size: 1rem;
+  border-radius: 20px;
+  border: 2px solid #174ea6;
+  background: linear-gradient(90deg, #e3f2fd 0%, #e0f7fa 100%);
+  color: #174ea6;
+  font-family: "Quicksand", sans-serif;
+  cursor: pointer;
+  width: fit-content;
+  box-shadow: 0 2px 8px rgba(23, 78, 166, 0.08);
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+  outline: none;
+}
+
+select#chartTypeSelector:hover,
+select#categoryChartType:hover,
+select#chartTypeSelector:focus,
+select#categoryChartType:focus {
+  border: 2px solid #00897b;
+  background: linear-gradient(90deg, #e0f7fa 0%, #e3f2fd 100%);
+  box-shadow: 0 4px 12px rgba(0, 137, 123, 0.12);
+}
+
+.global-btn {
+  background: linear-gradient(90deg, #174ea6 0%, #00897b 100%);
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 28px;
+  margin: 0 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(23, 78, 166, 0.15);
+  transition: background 0.3s, transform 0.2s;
+}
+
+.global-btn:hover {
+  background: linear-gradient(90deg, #00897b 0%, #174ea6 100%);
+  transform: translateY(-2px) scale(1.04);
 }
