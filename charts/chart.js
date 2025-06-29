@@ -201,6 +201,31 @@ function createCategoryChart(chartData, type) {
   chartInstance2 = new Chart(canvas2, config);
 }
 
+// Listener for DB changes.
+if (!!window.EventSource) {
+  const source = new EventSource("sse.php");
+
+  // 🔹 Listen for 'sales' updates
+  source.addEventListener("sales", function(event) {
+    const data = JSON.parse(event.data);
+    window.chartData = data;
+
+    const chartTypeSelector = document.getElementById("chartTypeSelector");
+    const chartType = chartTypeSelector ? chartTypeSelector.value : "bar";
+
+    createChart(data, chartType);
+  });
+
+  // 🔹 Listen for 'category' updates
+  source.addEventListener("category", function(event) {
+    const data = JSON.parse(event.data);
+    window.categoryChartData = data;
+
+    const chartType = document.getElementById("categoryChartType").value || "bar";
+    createCategoryChart(data, chartType);
+  });
+}
+
 // 🔘 Toggle visibility: show category chart
 function showCategoryChart() {
   document.getElementById("salesChart").style.display = "none";
