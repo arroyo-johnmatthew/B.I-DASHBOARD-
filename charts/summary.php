@@ -23,11 +23,11 @@ $data['total_users'] = (int)($result->fetch_assoc()['total_users'] ?? 0);
 
 // Top Product
 $result = $mysqli->query("
-  SELECT p.name, SUM(s.quantity) AS total_qty
+  SELECT p.name, SUM(s.price * s.quantity) AS total_revenue
   FROM sales s
   JOIN products p ON s.product_id = p.id
   GROUP BY p.id
-  ORDER BY total_qty DESC
+  ORDER BY total_revenue DESC
   LIMIT 1
 ");
 $top = $result->fetch_assoc();
