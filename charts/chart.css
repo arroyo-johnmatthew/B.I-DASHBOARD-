@@ -58,7 +58,8 @@ canvas#myChart {
 }
 
 select#chartTypeSelector,
-select#categoryChartType {
+select#categoryChartType, 
+select#locationChartType {
   margin-bottom: 20px;
   padding: 10px 16px;
   font-size: 1rem;
@@ -76,8 +77,10 @@ select#categoryChartType {
 
 select#chartTypeSelector:hover,
 select#categoryChartType:hover,
+select#locationChartType:hover,
 select#chartTypeSelector:focus,
-select#categoryChartType:focus {
+select#categoryChartType:focus,
+select#locationChartType:focus {
   border: 2px solid #00897b;
   background: linear-gradient(90deg, #e0f7fa 0%, #e3f2fd 100%);
   box-shadow: 0 4px 12px rgba(0, 137, 123, 0.12);
