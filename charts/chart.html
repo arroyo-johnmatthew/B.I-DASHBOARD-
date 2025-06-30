@@ -10,9 +10,10 @@
 <body>
   <!-- 🔘 Global Control Buttons -->
   <div style="text-align: center; margin-top: 30px;">
-    <button class="global-btn" onclick="showSalesChart()">Show Sales Chart</button>
-    <button class="global-btn" onclick="showCategoryChart()">Show Category Chart</button>
-    <button class="global-btn" onclick="showLocationChart()">Show Location Chart</button>
+    <button class="global-btn" onclick="showSalesChart()">Sales by Product Name</button>
+    <button class="global-btn" onclick="showCategoryChart()">Quantity Sold by Category</button>
+    <button class="global-btn" onclick="showLocationChart()">Sales by Location</button>
+    <button class="global-btn" onclick="showTimeChart()">Sales Over Time</button>
   </div>
 
   <!-- 🔹 Summary Cards -->
@@ -55,6 +56,17 @@
       <option value="pie">Pie Chart</option>
     </select>
     <canvas id="myChart3"></canvas>
+  </div>
+
+  <!-- 🔹 Sales Over Time Section -->
+  <div class="chart" id="timeChart" style="display: none;">
+    <h2>Sales Over Time</h2>
+    <select id="timeChartType" onchange="changeTimeChartType(this.value)">
+      <option value="line">Line Chart</option>
+      <option value="bar">Bar Chart</option>
+      <option value="pie">Pie Chart</option>
+    </select>
+    <canvas id="myChart4"></canvas>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

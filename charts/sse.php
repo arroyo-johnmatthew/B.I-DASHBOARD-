@@ -9,6 +9,7 @@ $lastSales = '';
 $lastCategory = '';
 $lastLocation = '';
 $lastSummary = '';
+$lastSalesOvertime = '';
 
 
 // Loops getting the json data from the server.
@@ -17,6 +18,7 @@ while (true) {
     $json2 = file_get_contents('http://localhost/charts/quantity_by_category.php');
     $json3 = file_get_contents('http://localhost/charts/sales_by_location.php');
     $json4 = file_get_contents('http://localhost/charts/summary.php');
+    $json5 = file_get_contents('http://localhost/charts/sales_over_time.php');
 
     // Send sales data if changed
     if ($json1 !== $lastSales) {
@@ -50,6 +52,15 @@ while (true) {
         $lastSummary = $json4;
         echo "event: summary\n";
         echo "data: $json4\n\n";
+        ob_flush();
+        flush();
+    }
+
+    // Send sales over time data if changed
+    if ($json5 !== $lastSalesOvertime) {
+        $lastSalesOvertime = $json5;
+        echo "event: salesOverTime\n";
+        echo "data: $json5\n\n";
         ob_flush();
         flush();
     }

@@ -59,6 +59,7 @@ canvas#myChart {
 
 select#chartTypeSelector,
 select#categoryChartType, 
+select#timeChartType,
 select#locationChartType {
   margin-bottom: 20px;
   padding: 10px 16px;
@@ -78,6 +79,8 @@ select#locationChartType {
 select#chartTypeSelector:hover,
 select#categoryChartType:hover,
 select#locationChartType:hover,
+select#timeChartType:hover,
+select#timeChartType:focus,
 select#chartTypeSelector:focus,
 select#categoryChartType:focus,
 select#locationChartType:focus {

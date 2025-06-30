@@ -1,3 +1,4 @@
+// Fetch summary data
 fetch("summary.php")
   .then((res) => res.json())
   .then((data) => {
@@ -15,9 +16,11 @@ const chartContainer = document.querySelector(".chart");
 const canvas = document.getElementById("myChart");
 const ctx = canvas.getContext("2d");
 
+// Declare chart instances
 let chartInstance;
 let chartInstance2;
 let chartInstance3;
+let chartInstance4;
 
 // Generate HSL-based unique colors
 function generateColors(count) {
@@ -304,6 +307,91 @@ function changeLocationChartType(newType) {
   createLocationChart(window.locationChartData, newType);
 }
 
+// Load sales overtime chart
+function loadTimeChart(type = "line") {
+  fetch("sales_over_time.php")
+    .then(response => response.json())
+    .then(data => {
+      createTimeChart(data, type);
+      window.timeChartData = data;
+    });
+}
+
+// Render sales over time chart
+function createTimeChart(chartData, type) {
+  const ctx4 = document.getElementById("myChart4").getContext("2d");
+
+  if (chartInstance4) chartInstance4.destroy();
+
+  const colors = generateColors(chartData.length);
+
+  chartInstance4 = new Chart(ctx4, {
+    type: type,
+    data: {
+      labels: chartData.map(row => row.date),
+      datasets: [{
+        label: "Total Sales (₱)",
+        data: chartData.map(row => row.total_sales),
+        backgroundColor: colors,
+        borderColor: "#555",
+        borderWidth: 1,
+        fill: false,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: { top: 20, bottom: 20, left: 20, right: 20 }
+      },
+      scales: type !== "pie" ? {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: "Total Sales"
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: "Date"
+          },
+          ticks: {
+            autoSkip: false,
+            maxRotation: 0,
+            minRotation: 0,
+            align: "center",
+            padding: 10
+          }
+        }
+      } : {},
+      plugins: {
+        title: {
+          display: true,
+          text: "Sales Over Time",
+          font: { size: 18 }
+        },
+        legend: {
+          display: true,
+          position: "bottom",
+          labels: {
+            boxWidth: 20,
+            padding: 15,
+            font: { size: 14 }
+          }
+        }
+      }
+    }
+  });
+}
+
+// Change chart type for time chart
+function changeTimeChartType(newType) {
+  createTimeChart(window.timeChartData, newType);
+}
+
 // Real-time listener
 if (!!window.EventSource) {
   const source = new EventSource("sse.php");
@@ -341,12 +429,21 @@ if (!!window.EventSource) {
     document.getElementById("topProduct").innerHTML =
       `${data.top_product}<br><span>Top Product</span>`;
   });
+
+  source.addEventListener("salesOverTime", function(event) {
+    const data = JSON.parse(event.data);
+    window.timeChartData = data;
+    const typeSelector = document.getElementById("timeChartType");
+    const chartType = typeSelector ? typeSelector.value : "line";
+    createTimeChart(data, chartType);
+  });
 }
 
 // Toggle visibility: show category chart
 function showCategoryChart() {
   document.getElementById("salesChart").style.display = "none";
   document.getElementById("locationChart").style.display = "none";
+  document.getElementById("timeChart").style.display = "none"; 
   document.getElementById("categoryChart").style.display = "flex";
   loadCategoryChart(document.getElementById("categoryChartType").value);
 }
@@ -355,6 +452,7 @@ function showCategoryChart() {
 function showSalesChart() {
   document.getElementById("categoryChart").style.display = "none";
   document.getElementById("locationChart").style.display = "none";
+  document.getElementById("timeChart").style.display = "none"; 
   document.getElementById("salesChart").style.display = "flex";
   createChart(window.chartData, document.getElementById("chartTypeSelector").value);
 }
@@ -363,6 +461,18 @@ function showSalesChart() {
 function showLocationChart() {
   document.getElementById("salesChart").style.display = "none";
   document.getElementById("categoryChart").style.display = "none";
+  document.getElementById("timeChart").style.display = "none"; 
   document.getElementById("locationChart").style.display = "flex";
   loadLocationChart(document.getElementById("locationChartType").value);
 }
+
+// Toggle visibility: show sales over time chart
+function showTimeChart() {
+  document.getElementById("salesChart").style.display = "none";
+  document.getElementById("categoryChart").style.display = "none";
+  document.getElementById("locationChart").style.display = "none";
+  document.getElementById("timeChart").style.display = "flex";
+  loadTimeChart(document.getElementById("timeChartType").value);
+}
+
+
