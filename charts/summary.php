@@ -18,8 +18,17 @@ $result = $mysqli->query("SELECT COUNT(*) AS total_orders FROM orders");
 $data['total_orders'] = (int)($result->fetch_assoc()['total_orders'] ?? 0);
 
 // Total Users
-$result = $mysqli->query("SELECT COUNT(*) AS total_users FROM users");
-$data['total_users'] = (int)($result->fetch_assoc()['total_users'] ?? 0);
+$result = $mysqli->query("
+  SELECT CONCAT(l.city, ', ', l.state) AS location, 
+  SUM(s.price * s.quantity) AS total_sales
+  FROM sales s
+  JOIN locations l ON s.shipping_address_id = l.id
+  GROUP BY l.city, l.state
+  ORDER BY total_sales DESC
+  LIMIT 1
+");
+$row = $result->fetch_assoc();
+$data['top_location'] = $row ? $row['location'] : '-';
 
 // Top Product
 $result = $mysqli->query("

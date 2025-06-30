@@ -5,8 +5,8 @@ fetch("summary.php")
       `₱${Number(data.total_sales).toLocaleString()}<br><span>Total Sales</span>`;
     document.getElementById("totalOrders").innerHTML = 
       `${data.total_orders}<br><span>Total Orders</span>`;
-    document.getElementById("totalUsers").innerHTML = 
-      `${data.total_users}<br><span>Total Users</span>`;
+    document.getElementById("topLocation").innerHTML =
+      `${data.top_location}<br><span>Top Location</span>`;
     document.getElementById("topProduct").innerHTML = 
       `${data.top_product}<br><span>Top Product</span>`;
   });
