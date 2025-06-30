@@ -325,19 +325,27 @@ function createTimeChart(chartData, type) {
 
   const colors = generateColors(chartData.length);
 
-  chartInstance4 = new Chart(ctx4, {
+  const datasetConfig = {
+    data: chartData.map(row => row.total_sales),
+    backgroundColor: colors,
+    borderColor: "#555",
+    borderWidth: 1,
+    fill: false,
+    tension: 0.3
+  };
+
+  // Add label only for non-pie charts
+  if (type !== "pie") {
+    datasetConfig.label = "Total Sales (₱)";
+  }
+
+  const config = {
     type: type,
     data: {
-      labels: chartData.map(row => row.date),
-      datasets: [{
-        label: "Total Sales (₱)",
-        data: chartData.map(row => row.total_sales),
-        backgroundColor: colors,
-        borderColor: "#555",
-        borderWidth: 1,
-        fill: false,
-        tension: 0.3
-      }]
+      labels: type === "pie"
+        ? chartData.map(row => row.date)
+        : chartData.map(row => row.date),
+      datasets: [datasetConfig]
     },
     options: {
       responsive: true,
@@ -374,8 +382,8 @@ function createTimeChart(chartData, type) {
           font: { size: 18 }
         },
         legend: {
-          display: true,
-          position: "bottom",
+          display: type === "pie",
+          position: "right",
           labels: {
             boxWidth: 20,
             padding: 15,
@@ -384,7 +392,9 @@ function createTimeChart(chartData, type) {
         }
       }
     }
-  });
+  };
+
+  chartInstance4 = new Chart(ctx4, config);
 }
 
 // Change chart type for time chart
