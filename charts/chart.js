@@ -430,14 +430,42 @@ if (!!window.EventSource) {
   source.addEventListener("summary", function(event) {
     const data = JSON.parse(event.data);
 
-    document.getElementById("totalSales").innerHTML =
-      `₱${Number(data.total_sales).toLocaleString()}<br><span>Total Sales</span>`;
-    document.getElementById("totalOrders").innerHTML =
-      `${data.total_orders}<br><span>Total Orders</span>`;
-    document.getElementById("totalUsers").innerHTML =
-      `${data.total_users}<br><span>Total Users</span>`;
-    document.getElementById("topProduct").innerHTML =
-      `${data.top_product}<br><span>Top Product</span>`;
+    const totalSalesElem = document.getElementById("totalSales");
+    const totalProductsElem = document.getElementById("totalProducts");
+    const totalOrdersElem = document.getElementById("totalOrders");
+    const totalCustomersElem = document.getElementById("totalCustomers");
+    const topLocationElem = document.getElementById("topLocation");
+    const topProductElem = document.getElementById("topProduct");
+
+    if (totalSalesElem && data.total_sales !== undefined) {
+      totalSalesElem.innerHTML =
+        `₱${Number(data.total_sales).toLocaleString()}<br><span>Total Sales</span>`;
+    }
+
+    if(totalProductsElem && data.total_products !== undefined) {
+      totalProductsElem.innerHTML =
+        `${data.total_products}<br><span>Total Products</span>`;
+    }
+
+    if (totalOrdersElem && data.total_orders !== undefined) {
+      totalOrdersElem.innerHTML =
+        `${data.total_orders}<br><span>Total Orders</span>`;
+    }
+
+    if (totalCustomersElem && data.total_customers !== undefined) {
+      totalCustomersElem.innerHTML =
+        `${data.total_customers}<br><span>Total Customers</span>`;
+    }
+
+    if (topLocationElem && data.top_location !== undefined && data.top_location !== null) {
+      topLocationElem.innerHTML =
+        `${data.top_location}<br><span>Top Location</span>`;
+    }
+    
+    if (topProductElem && data.top_product !== undefined && data.top_product !== null) {
+      topProductElem.innerHTML =
+        `${data.top_product}<br><span>Top Product</span>`;
+    }
   });
 
   source.addEventListener("salesOverTime", function(event) {

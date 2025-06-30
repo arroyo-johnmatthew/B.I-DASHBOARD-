@@ -13,9 +13,17 @@ $data = [];
 $result = $mysqli->query("SELECT SUM(price * quantity) AS total_sales FROM sales");
 $data['total_sales'] = (float)($result->fetch_assoc()['total_sales'] ?? 0);
 
+// Total Products
+$result = $mysqli->query("SELECT COUNT(*) AS total_products FROM products");
+$data['total_products'] = (int)($result->fetch_assoc()['total_products'] ?? 0);
+
 // Total Orders
 $result = $mysqli->query("SELECT COUNT(*) AS total_orders FROM orders");
 $data['total_orders'] = (int)($result->fetch_assoc()['total_orders'] ?? 0);
+
+// Total Customers 
+$result = $mysqli->query("SELECT COUNT(users.id) AS total_customers FROM users;");
+$data['total_customers'] = (int)($result->fetch_assoc()['total_customers'] ?? 0);
 
 // Total Users
 $result = $mysqli->query("
