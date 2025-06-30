@@ -8,14 +8,6 @@
 </head>
 
 <body>
-  <!-- 🔘 Global Control Buttons -->
-  <div style="text-align: center; margin-top: 30px;">
-    <button class="global-btn" onclick="showSalesChart()">📦 Sales by Product Name</button>
-    <button class="global-btn" onclick="showCategoryChart()">📚 Quantity Sold by Category</button>
-    <button class="global-btn" onclick="showLocationChart()">📍Sales by Location</button>
-    <button class="global-btn" onclick="showTimeChart()">📈 Sales Over Time</button>
-  </div>
-
   <!-- 🔹 Summary Cards -->
   <div class="summary-cards" id="summaryCards">
   <div class="card" id="totalSales">₱0<br><span>Total Sales</span></div>
@@ -24,7 +16,14 @@
   <div class="card" id="topProduct">-<br><span>Top Product</span></div>
   </div>
 
-
+  <!-- 🔘 Global Control Buttons -->
+  <div style="text-align: center; margin-top: 30px;">
+    <button class="global-btn" onclick="showSalesChart()">📦 Sales by Product Name</button>
+    <button class="global-btn" onclick="showCategoryChart()">📚 Quantity Sold by Category</button>
+    <button class="global-btn" onclick="showLocationChart()">📍Sales by Location</button>
+    <button class="global-btn" onclick="showTimeChart()">📈 Sales Over Time</button>
+  </div>
+  
   <!-- 🔹 Sales Chart Section -->
   <div class="chart" id="salesChart">
     <h2>Sales</h2>

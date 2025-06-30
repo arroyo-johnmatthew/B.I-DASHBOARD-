@@ -18,10 +18,10 @@ SELECT
   locations.city,
   locations.state,
   SUM(sales.price * sales.quantity) AS total_sales
-FROM sales
-JOIN locations ON sales.shipping_address_id = locations.id
-GROUP BY locations.city, locations.state
-ORDER BY total_sales DESC
+  FROM sales
+  JOIN locations ON sales.shipping_address_id = locations.id
+  GROUP BY locations.city, locations.state
+  ORDER BY total_sales DESC
 ";
 
 $result = $mysqli->query($sql);
