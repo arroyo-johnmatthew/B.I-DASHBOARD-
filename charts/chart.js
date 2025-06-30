@@ -1,3 +1,16 @@
+fetch("summary.php")
+  .then((res) => res.json())
+  .then((data) => {
+    document.getElementById("totalSales").innerHTML = 
+      `₱${Number(data.total_sales).toLocaleString()}<br><span>Total Sales</span>`;
+    document.getElementById("totalOrders").innerHTML = 
+      `${data.total_orders}<br><span>Total Orders</span>`;
+    document.getElementById("totalUsers").innerHTML = 
+      `${data.total_users}<br><span>Total Users</span>`;
+    document.getElementById("topProduct").innerHTML = 
+      `${data.top_product}<br><span>Top Product</span>`;
+  });
+
 const chartContainer = document.querySelector(".chart");
 const canvas = document.getElementById("myChart");
 const ctx = canvas.getContext("2d");
@@ -314,6 +327,19 @@ if (!!window.EventSource) {
     window.locationChartData = data;
     const type = document.getElementById("locationChartType").value || "bar";
     createLocationChart(data, type);
+  });
+  
+  source.addEventListener("summary", function(event) {
+    const data = JSON.parse(event.data);
+
+    document.getElementById("totalSales").innerHTML =
+      `₱${Number(data.total_sales).toLocaleString()}<br><span>Total Sales</span>`;
+    document.getElementById("totalOrders").innerHTML =
+      `${data.total_orders}<br><span>Total Orders</span>`;
+    document.getElementById("totalUsers").innerHTML =
+      `${data.total_users}<br><span>Total Users</span>`;
+    document.getElementById("topProduct").innerHTML =
+      `${data.top_product}<br><span>Top Product</span>`;
   });
 }
 
