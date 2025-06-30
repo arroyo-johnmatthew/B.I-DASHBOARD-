@@ -7,12 +7,14 @@ header('Connection: keep-alive');
 // Where previous data is stored
 $lastSales = '';
 $lastCategory = '';
+$lastLocation = '';
 
 
 // Loops getting the json data from the server.
 while (true) {
     $json1 = file_get_contents('http://localhost/charts/chart.php');
     $json2 = file_get_contents('http://localhost/charts/quantity_by_category.php');
+    $json3 = file_get_contents('http://localhost/charts/sales_by_location.php');
 
     // Send sales data if changed
     if ($json1 !== $lastSales) {
@@ -28,6 +30,15 @@ while (true) {
         $lastCategory = $json2;
         echo "event: category\n";
         echo "data: $json2\n\n";
+        ob_flush();
+        flush();
+    }
+
+    //Send location data if changed
+    if ($json3 !== $lastLocation) {
+        $lastLocation = $json3;
+        echo "event: location\n";
+        echo "data: $json3\n\n";
         ob_flush();
         flush();
     }

@@ -4,8 +4,9 @@ const ctx = canvas.getContext("2d");
 
 let chartInstance;
 let chartInstance2;
+let chartInstance3;
 
-// 🔹 Generate HSL-based unique colors
+// Generate HSL-based unique colors
 function generateColors(count) {
   const colors = [];
   const saturation = 65;
@@ -19,7 +20,7 @@ function generateColors(count) {
   return colors;
 }
 
-// 🔹 Fetch sales data on page load
+// Fetch sales data on page load
 fetch("chart.php")
   .then((response) => response.json())
   .then((data) => {
@@ -27,7 +28,7 @@ fetch("chart.php")
     window.chartData = data;
   });
 
-// 🔹 Render sales chart
+// Render sales chart
 function createChart(chartData, type) {
   if (chartInstance) {
     chartInstance.destroy();
@@ -103,17 +104,17 @@ function createChart(chartData, type) {
   chartInstance = new Chart(ctx, config);
 }
 
-// 🔁 Change chart type for sales chart
+// Change chart type for sales chart
 function changeChartType(newType) {
   createChart(window.chartData, newType);
 }
 
-// 🔁 Change chart type for category chart
+// Change chart type for category chart
 function changeCategoryChartType(newType) {
   createCategoryChart(window.categoryChartData, newType);
 }
 
-// 🔹 Load category chart data
+// Load category chart data
 function loadCategoryChart(type = "bar") {
   fetch("quantity_by_category.php")
     .then((response) => response.json())
@@ -123,7 +124,7 @@ function loadCategoryChart(type = "bar") {
     });
 }
 
-// 🔹 Render category chart
+// Render category chart
 function createCategoryChart(chartData, type) {
   const canvas2 = document.getElementById("myChart2").getContext("2d");
 
@@ -201,41 +202,141 @@ function createCategoryChart(chartData, type) {
   chartInstance2 = new Chart(canvas2, config);
 }
 
-// Listener for DB changes.
+// Load location chart
+function loadLocationChart(type = "bar") {
+  fetch("sales_by_location.php")
+    .then(response => response.json())
+    .then(data => {
+      createLocationChart(data, type);
+      window.locationChartData = data;
+    });
+}
+
+// Render location chart
+function createLocationChart(chartData, type) {
+  const ctx3 = document.getElementById("myChart3").getContext("2d");
+
+  if (chartInstance3) chartInstance3.destroy();
+
+  const colors = generateColors(chartData.length);
+
+  const config = {
+    type: type,
+    data: {
+      labels: type === "pie"
+        ? chartData.map(row => row.location)
+        : chartData.map(row => row.location.split(" ")),
+      datasets: [{
+        label: "Total Sales (₱)",
+        data: chartData.map(row => row.total_sales),
+        backgroundColor: colors,
+        borderColor: "#555",
+        borderWidth: 1,
+        fill: false,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: { top: 20, bottom: 20, left: 20, right: 20 }
+      },
+      scales: type !== "pie" ? {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: "Total Sales"
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: "Location"
+          },
+          ticks: {
+            autoSkip: false,
+            maxRotation: 0,
+            minRotation: 0,
+            align: "center",
+            padding: 10
+          }
+        }
+      } : {},
+      plugins: {
+        title: {
+          display: true,
+          text: "Sales by City and State",
+          font: { size: 18 }
+        },
+        legend: {
+          display: type === "pie",
+          position: "right",
+          labels: {
+            boxWidth: 20,
+            padding: 15,
+            font: { size: 14 }
+          }
+        }
+      }
+    }
+  };
+
+  chartInstance3 = new Chart(ctx3, config);
+}
+
+// Change chart type for location chart
+function changeLocationChartType(newType) {
+  createLocationChart(window.locationChartData, newType);
+}
+
+// Real-time listener
 if (!!window.EventSource) {
   const source = new EventSource("sse.php");
 
-  // 🔹 Listen for 'sales' updates
   source.addEventListener("sales", function(event) {
     const data = JSON.parse(event.data);
     window.chartData = data;
-
-    const chartTypeSelector = document.getElementById("chartTypeSelector");
-    const chartType = chartTypeSelector ? chartTypeSelector.value : "bar";
-
-    createChart(data, chartType);
+    const type = document.getElementById("chartTypeSelector").value || "bar";
+    createChart(data, type);
   });
 
-  // 🔹 Listen for 'category' updates
   source.addEventListener("category", function(event) {
     const data = JSON.parse(event.data);
     window.categoryChartData = data;
+    const type = document.getElementById("categoryChartType").value || "bar";
+    createCategoryChart(data, type);
+  });
 
-    const chartType = document.getElementById("categoryChartType").value || "bar";
-    createCategoryChart(data, chartType);
+  source.addEventListener("location", function(event) {
+    const data = JSON.parse(event.data);
+    window.locationChartData = data;
+    const type = document.getElementById("locationChartType").value || "bar";
+    createLocationChart(data, type);
   });
 }
 
-// 🔘 Toggle visibility: show category chart
+// Toggle visibility: show category chart
 function showCategoryChart() {
   document.getElementById("salesChart").style.display = "none";
+  document.getElementById("locationChart").style.display = "none";
   document.getElementById("categoryChart").style.display = "flex";
   loadCategoryChart(document.getElementById("categoryChartType").value);
 }
 
-// 🔘 Toggle visibility: show sales chart
+// Toggle visibility: show sales chart
 function showSalesChart() {
   document.getElementById("categoryChart").style.display = "none";
+  document.getElementById("locationChart").style.display = "none";
   document.getElementById("salesChart").style.display = "flex";
   createChart(window.chartData, document.getElementById("chartTypeSelector").value);
+}
+
+// Toggle visibility: show location chart
+function showLocationChart() {
+  document.getElementById("salesChart").style.display = "none";
+  document.getElementById("categoryChart").style.display = "none";
+  document.getElementById("locationChart").style.display = "flex";
+  loadLocationChart(document.getElementById("locationChartType").value);
 }

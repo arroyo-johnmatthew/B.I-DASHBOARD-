@@ -12,6 +12,7 @@
   <div style="text-align: center; margin-top: 30px;">
     <button class="global-btn" onclick="showSalesChart()">Show Sales Chart</button>
     <button class="global-btn" onclick="showCategoryChart()">Show Category Chart</button>
+    <button class="global-btn" onclick="showLocationChart()">Show Location Chart</button>
   </div>
 
   <!-- 🔹 Sales Chart Section -->
@@ -34,6 +35,17 @@
       <option value="pie">Pie Chart</option>
     </select>
     <canvas id="myChart2"></canvas>
+  </div>
+
+  <!-- 🔹 Sales by Location Chart Section -->
+  <div class="chart" id="locationChart" style="display: none;">
+    <h2>Sales by Location</h2>
+    <select id="locationChartType" onchange="changeLocationChartType(this.value)">
+      <option value="bar">Bar Chart</option>
+      <option value="line">Line Chart</option>
+      <option value="pie">Pie Chart</option>
+    </select>
+    <canvas id="myChart3"></canvas>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
